@@ -1,0 +1,12 @@
+{
+  "name": "ja",
+  "version": "0.0.1",
+  "description": "OpenAI APIs",
+  "main": "dist/index.js",
+  "scripts": {},
+  "author": "Jie.",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "axios": "^1.7.9"
+  }
+}
