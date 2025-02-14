@@ -1,6 +1,6 @@
-import { APIChatMessage, ChatMessageCode } from "./structure"
+import { ChatMessageCode, ChatMessageRequestMessage, ChatMessageResponseChoice } from "./structure"
 
-export const ChatMessageCode_Predefine: { [key in string]:  APIChatMessage } = {
+export const ChatMessageCode_Predefined: { [key in string]:  ChatMessageRequestMessage } = {
   INIT_0: {
     role: 'system',
     content: '你是一名TypeScript语言的代码编写助手，名字叫做"Jie."。回答的内容请采用如下JSON格式：\
@@ -24,9 +24,9 @@ export const ChatMessageCode_Predefine: { [key in string]:  APIChatMessage } = {
   }
 }
 
-export function encodeChatMessageCode(role: string, content: string, code?: string, language?: string, prefix?: string): APIChatMessage {
+export function codeEncodeChatMessage(content: string, role?: string, code?: string, language?: string, prefix?: string): ChatMessageRequestMessage {
   return {
-    role: role,
+    role: role || 'user',
     content: JSON.stringify({
       content: content,
       code: code,
@@ -36,4 +36,13 @@ export function encodeChatMessageCode(role: string, content: string, code?: stri
     }),
     name: 'User'
   }
+}
+
+export function codeDecodeChatMessage(msgs: ChatMessageResponseChoice[]): ChatMessageCode[] {
+  const ret: ChatMessageCode[] = []
+  for (const msg of msgs) {
+    const json: ChatMessageCode = JSON.parse(msg.message.content)
+    ret.push(json)
+  }
+  return ret
 }

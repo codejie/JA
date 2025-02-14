@@ -1,4 +1,6 @@
-import { request_chat } from "./src/request"
+import { request_chat, request_chat_code } from "./src/request"
+import { ChatMessageCode_Predefined, codeDecodeChatMessage, codeEncodeChatMessage } from "./src/request/format"
+import { ChatMessageRequestMessage } from "./src/request/structure"
 
 // const data: any[] = [
 //   {
@@ -13,17 +15,18 @@ import { request_chat } from "./src/request"
 //   }
 // ]
 
-const data: any[] = [
-  Message_Chat.INIT_0,
-  Message_Chat.INIT_1,
-  formatUserMessage("代码片段，用于实现两个整型数字的和运算。")
+const data: ChatMessageRequestMessage[] = [
+  ChatMessageCode_Predefined.INIT_0,
+  ChatMessageCode_Predefined.INIT_1,
+  codeEncodeChatMessage("代码片段，用于实现两个整型数字的和运算。")
 ]
 
 
-
-request_chat(data)
+request_chat_code(data)
   .then(ret => {
-    console.log(ret.data)
+    const results = codeDecodeChatMessage(ret.choices)
+    console.log(results)
+    // console.log(ret)
   }).catch(err => {
     console.log(err)
   })

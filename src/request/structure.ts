@@ -7,10 +7,10 @@ export interface ChatMessageRequestMessage {
 }
 
 export interface ChatMessageRequest {
-  model: ['deepseek-chat', 'deepseek-reasoner'],
+  model: 'deepseek-chat' | 'deepseek-reasoner',
   messages: ChatMessageRequestMessage[],
   response_format?: {
-    type: ['json_object', 'text']
+    type: 'json_object' | 'text'
   },
   max_tokens?: number,
   temperature?: number,
@@ -24,22 +24,22 @@ export interface ChatMessageRequest {
 }
 
 export interface ChatMessageResponseChoice {
-  finish_reason: ['stop', 'length', 'content_filter', 'tool_calls', 'insufficient_system_resource'],
+  finish_reason: 'stop' | 'length' | 'content_filter' | 'tool_calls' | 'insufficient_system_resource',
   index: number,
   message: {
-    role: ['assistant']
+    role: 'assistant'
     content: string,
     reasoning_content?: string,
     tool_calls?: {
       id: string,
-      type: ['function'],
+      type: 'function',
       function: {
         name: string,
         arguments: string
       }
     }[]
   },
-  logprobs: {
+  logprobs?: {
     content: {
       token: string,
       logprob: number
@@ -50,7 +50,7 @@ export interface ChatMessageResponseChoice {
         bytes?: number[]
       }[]
     }[]
-  }  
+  }
 }
 
 export interface ChatMessageResponse {
@@ -59,7 +59,7 @@ export interface ChatMessageResponse {
   created: number,
   choices: ChatMessageResponseChoice[],
   system_fingerprint: string,
-  object: ['chat.completion']
+  object: 'chat.completion'
   usage: {
     completion_tokens: number,
     prompt_tokens: number,
@@ -67,7 +67,7 @@ export interface ChatMessageResponse {
     prompt_cache_miss_tokens: number,
     total_tokens: number,
     completion_tokens_details: {
-      reasoning_tokens: number
+      cached_tokens: number
     }
   }
 }
