@@ -1,4 +1,4 @@
-import { ChatMessageCode, ChatMessageRequestMessage, ChatMessageResponseChoice } from "./structure"
+import { ChatMessageCodeContent, ChatMessageRequestMessage, ChatMessageResponseChoice } from "./structure"
 
 export const ChatMessageCode_Predefined: { [key in string]:  ChatMessageRequestMessage } = {
   INIT_0: {
@@ -38,10 +38,18 @@ export function codeEncodeChatMessage(content: string, role?: string, code?: str
   }
 }
 
-export function codeDecodeChatMessage(msgs: ChatMessageResponseChoice[]): ChatMessageCode[] {
-  const ret: ChatMessageCode[] = []
+export function codeEncodeUserContent(content: ChatMessageCodeContent): ChatMessageRequestMessage {
+  return {
+    role: 'user',
+    content: JSON.stringify(content),
+    name: 'User'
+  }
+}
+
+export function codeDecodeChatMessage(msgs: ChatMessageResponseChoice[]): ChatMessageCodeContent[] {
+  const ret: ChatMessageCodeContent[] = []
   for (const msg of msgs) {
-    const json: ChatMessageCode = JSON.parse(msg.message.content)
+    const json: ChatMessageCodeContent = JSON.parse(msg.message.content)
     ret.push(json)
   }
   return ret
