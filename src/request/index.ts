@@ -1,57 +1,46 @@
-import axios from "axios"
-import { makeConfig } from "./parameters"
-import { ChatMessageRequest, ChatMessageRequestMessage, ChatMessageResponse } from "./structure"
+import axios, { AxiosHeaders, AxiosRequestConfig, AxiosResponse } from "axios";
+import * as token from '../../token.json'
+import { ChatMessageRequestMessage, ChatMessageResponseChoice } from "./structure";
 
-export function request_chat(req: ChatMessageRequest): Promise<ChatMessageResponse> {
-  return new Promise<ChatMessageResponse>((resolve, reject) => {
-    axios(makeConfig('chat', req)).then(ret => {
-      resolve(ret.data)
-    }).catch(err => {
-      reject(err)
-    })
-  })
+const _base_url: string = 'https://api.deepseek.com'
+
+const _urls: { [key in string]: string } = {
+  'chat': '/chat/completions',
+  'beta': '/beta/completions'
 }
 
-export function request_chat_code(msgs:ChatMessageRequestMessage[]): Promise<ChatMessageResponse> {
-  const req: ChatMessageRequest = {
+const _headers: AxiosHeaders = new AxiosHeaders({
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ' + token.token
+})
+
+function _request(type: string, data: any, method: string = 'post'): Promise<AxiosResponse<any, any>> {
+  return axios({
+    headers: _headers,
+    url: _base_url + _urls[type],
+    method: method,
+    data: data
+  })  
+}
+
+export function request_chat(msgs: ChatMessageRequestMessage[], extra: any = undefined): Promise<ChatMessageResponseChoice[]> {
+  const data = {
     model: 'deepseek-chat',
     messages: msgs,
     response_format: {
       type: 'json_object'
-    }
+    },
+    ...extra
   }
-  return request_chat(req)
+  return new Promise<ChatMessageResponseChoice[]>((resolve, reject) => {
+    _request('chat', data, 'post')
+      .then(ret => {
+        // const chioces = ret.data.chioces
+        resolve(ret.data.choices) 
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
 }
-
-// export function request_chat_code(msgs: APIChatMessage[]): Promise<APIChatMessage[]> {
-//   return new Promise<APIChatMessage[]>((resolve, reject) => {
-//     axios(makeConfig('chat', {
-//       model: 'deepseek-chat',
-//       messages: msgs,
-//       response_format: {
-//         type: 'json_object'
-//       }
-//     })).then(ret => {
-//       resolve(ret.data)
-//     }).catch(err => {
-//       reject(err)
-//     })
-
-//   return axios(makeConfig('chat', {
-//     model: 'deepseek-chat',
-//     messages: msgs,
-//     response_format: {
-//       type: 'json_object'
-//     }
-//   }))
-// }
-
-// export function request_chat(msgs: any[]): Promise<any> {
-//   return axios(makeConfig('chat', {
-//     model: 'deepseek-chat',
-//     messages: msgs,
-//     response_format: {
-//       type: 'json_object'
-//     }
-//   }))
-// }

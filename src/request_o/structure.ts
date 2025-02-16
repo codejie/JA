@@ -73,8 +73,8 @@ export interface ChatMessageResponse {
 }
 
 ///
-// export interface ChatMessageCodeContent {
-//   content: string,
-//   language?: string,
-//   code?: string
-// }
+export interface ChatMessageCodeContent {
+  content: string,
+  language?: string,
+  code?: string
+}

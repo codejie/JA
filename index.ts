@@ -1,52 +1,51 @@
-import { request_chat, request_chat_code } from "./src/request"
-import { ChatMessageCode_Predefined, codeDecodeChatMessage, codeEncodeChatMessage, codeEncodeUserContent } from "./src/request/format"
-import { ChatMessageRequestMessage } from "./src/request/structure"
-import { ChatCodeTest_Contents } from "./src/test/code_req"
+import * as Chat from './src/conversation/chat'
+import { request_chat } from './src/request'
+import { ChatMessageRequestMessage } from './src/request/structure'
 
-// const data: any[] = [
-//   {
-//     role: 'system',
-//     content: '你是一名Python代码开发助手。回答的内容请采用Markdown格式。',
-//     name: 'Jie.'
-//   },
-//   {
-//     role: 'user',
-//     content: '我想要一个Python代码片段，用于计算两个数的和。',
-//     name: 'User'
-//   }
+
+
+// const data: ChatMessageRequestMessage[] = [
+//   ChatMessageCode_Predefined.INIT_0,
+//   ChatMessageCode_Predefined.INIT_1,
+//   // codeEncodeChatMessage("代码片段，用于实现两个整型数字的和运算。")
+//   codeEncodeUserContent(ChatCodeTest_Contents[0])
 // ]
 
-const data: ChatMessageRequestMessage[] = [
-  ChatMessageCode_Predefined.INIT_0,
-  ChatMessageCode_Predefined.INIT_1,
-  // codeEncodeChatMessage("代码片段，用于实现两个整型数字的和运算。")
-  codeEncodeUserContent(ChatCodeTest_Contents[0])
-]
+// async function main() {
+//   let ret = await request_chat_code(data)
+//   console.log(ret.choices)
+//   let choice = ret.choices[0]
+//   // const json = JSON.parse(choice.message.content)
+//   // console.log(json)
+//   data.push({
+//     role: choice.message.role,
+//     content: choice.message.content
+//   })
+//   data.push(codeEncodeUserContent(ChatCodeTest_Contents[1]))
+//   ret = await request_chat_code(data)
+//   console.log(ret.choices)
+//   choice = ret.choices[0]  
+//   data.push({
+//     role: choice.message.role,
+//     content: choice.message.content
+//   })
+//   data.push(codeEncodeUserContent(ChatCodeTest_Contents[2]))
+//   ret = await request_chat_code(data)
+//   console.log(ret.choices)
+
+//   console.log(data)
+
+// }
 
 async function main() {
-  let ret = await request_chat_code(data)
-  console.log(ret.choices)
-  let choice = ret.choices[0]
-  // const json = JSON.parse(choice.message.content)
-  // console.log(json)
+  Chat.init_conversation()
+  const data: ChatMessageRequestMessage[] = Chat.get_messages()
   data.push({
-    role: choice.message.role,
-    content: choice.message.content
+    role: 'user',
+    content: '请生成两个不同的函数代码片段，用于实现两个整型数字的和运算， 不需要用法示例。注意，是两个函数的代码。'
   })
-  data.push(codeEncodeUserContent(ChatCodeTest_Contents[1]))
-  ret = await request_chat_code(data)
-  console.log(ret.choices)
-  choice = ret.choices[0]  
-  data.push({
-    role: choice.message.role,
-    content: choice.message.content
-  })
-  data.push(codeEncodeUserContent(ChatCodeTest_Contents[2]))
-  ret = await request_chat_code(data)
-  console.log(ret.choices)
-
-  console.log(data)
-
+  const ret = await request_chat(data)
+  console.log(ret)
 }
 
 main()

@@ -1,4 +1,4 @@
-import { ChatMessageCodeContent } from "../request/structure";
+import { ChatMessageCodeContent } from "../request_o/structure";
 
 export const ChatCodeTest_Contents: ChatMessageCodeContent[] = [
   {
