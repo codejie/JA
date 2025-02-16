@@ -26,7 +26,9 @@ const data: ChatMessageRequestMessage[] = [
 async function main() {
   let ret = await request_chat_code(data)
   console.log(ret.choices)
-  const choice = ret.choices[0]
+  let choice = ret.choices[0]
+  // const json = JSON.parse(choice.message.content)
+  // console.log(json)
   data.push({
     role: choice.message.role,
     content: choice.message.content
@@ -34,6 +36,17 @@ async function main() {
   data.push(codeEncodeUserContent(ChatCodeTest_Contents[1]))
   ret = await request_chat_code(data)
   console.log(ret.choices)
+  choice = ret.choices[0]  
+  data.push({
+    role: choice.message.role,
+    content: choice.message.content
+  })
+  data.push(codeEncodeUserContent(ChatCodeTest_Contents[2]))
+  ret = await request_chat_code(data)
+  console.log(ret.choices)
+
+  console.log(data)
+
 }
 
 main()
