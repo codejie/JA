@@ -1,6 +1,4 @@
-import { ChatMessageCodeContent } from "../request_o/structure";
-
-export const ChatCodeTest_Contents: ChatMessageCodeContent[] = [
+export const ChatCodeTest_Contents = [
   {
     content: '请生成两个不同的函数代码片段，用于实现两个整型数字的和运算， 不需要用法示例。注意，是两个函数的代码。\n'
   },

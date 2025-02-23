@@ -1,15 +1,73 @@
 {
   "name": "ja",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "OpenAI APIs",
-  "main": "dist/index.js",
-  "scripts": {},
+  "engines": {
+    "vscode": "^1.97.0"
+  },
+  "categories": [
+		"AI",
+		"Chat",
+		"Programming Languages"
+  ],  
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "ja.helloWorld",
+        "title": "Hello World"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "ja-side-view",
+          "title": "JA",
+          "icon": "assets/icons/g-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "ja-side-view": [
+        {
+          "type": "webview",
+          "id": "ja.sideView",
+          "name": "JA"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "npm run check-types && npm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "npm run check-types && npm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir dist",
+    "watch-tests": "tsc -p . -w --outDir dist",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vscode-test"    
+  },
   "author": "Jie.",
   "license": "UNLICENSED",
+  "devDependencies": {
+    "@types/node": "20.x",
+    "@types/vscode": "^1.97.0",
+    "@typescript-eslint/eslint-plugin": "^8.22.0",
+    "@typescript-eslint/parser": "^8.22.0",
+    "esbuild": "^0.24.2",
+    "esbuild-plugin-copy": "^2.1.1",
+    "eslint": "^9.19.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.7.3"
+  },  
   "dependencies": {
-    "@types/eventsource": "^1.1.15",
     "axios": "^1.7.9",
-    "eventsource": "^3.0.5",
-    "uuid": "^11.0.5"
+    "uuid": "^11.0.5",
+    "@vscode/webview-ui-toolkit": "^1.4.0"    
   }
 }
