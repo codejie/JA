@@ -74,14 +74,14 @@ const watchConfig = {
         ...watchConfig,
       });
       await build({
-        ...webviewConfig,
+        // ...webviewConfig,
         ...watchConfig,
       });
       console.log("[watch] build finished");
     } else {
       // Build extension and webview code
       await build(extensionConfig);
-      await build(webviewConfig);
+      // await build(webviewConfig);
       console.log("build complete");
     }
   } catch (err) {
