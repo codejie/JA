@@ -1,6 +1,6 @@
 import axios, { AxiosHeaders, AxiosResponse } from "axios";
 // import { EventSource } from "eventsource"
-import * as token from '../../../token.json'
+import * as token from '../../token.json'
 import { ChatMessageRequestMessage, ChatMessageResponseChoice } from "./structure";
 
 const _base_url: string = 'https://api.deepseek.com'
