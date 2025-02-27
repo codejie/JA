@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
 </script>
 
@@ -26,5 +26,36 @@ import HelloWorld from './components/HelloWorld.vue'
 }
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
+}
+</style> -->
+
+<script setup lang="ts">
+import { provideVSCodeDesignSystem, vsCodeButton } from '@vscode/webview-ui-toolkit';
+import { vscode } from './utils/vscode'
+
+provideVSCodeDesignSystem().register(vsCodeButton());
+
+function on_click() {
+  console.info('click')
+  vscode.postMessage({
+    command: "hello",
+    text: "Hey there partner! 🤠",
+  });
+}
+
+</script>
+<template>
+  <div class="main">
+    <vscode-button @click="on_click">Click</vscode-button>
+  </div>
+</template>
+
+<style>
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100%;
 }
 </style>

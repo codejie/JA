@@ -5,7 +5,13 @@ import { viteStaticCopy } from 'vite-plugin-static-copy'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    vue(),
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag.startsWith('vscode-'),
+        },
+      },
+    }),
     viteStaticCopy({
       targets: [
         {
@@ -25,5 +31,8 @@ export default defineConfig({
       fileName: 'webview',
       formats: ['es']
     }
+  },
+  define: {
+    'process.env': {}
   }
 })

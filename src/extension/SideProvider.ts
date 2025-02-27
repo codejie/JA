@@ -14,27 +14,24 @@ export class SideProvider implements vscode.WebviewViewProvider {
   }
 
   private getWebviewContent(webview: vscode.Webview): string {
-    const webviewUri = this.getUri(webview, this._extensionUri, ["dist", "webview.js"]);
-    const stylesUri = this.getUri(webview, this._extensionUri, ["dist", "styles.css"]);
+    const webviewUri = this.getUri(webview, this._extensionUri, ["dist", "webview", "webview.js"]);
+    const stylesUri = this.getUri(webview, this._extensionUri, ["dist", "webview", "webview.css"]);
     const nonce = this.getNonce();
 
     return `
-			<!DOCTYPE html>
-			<html lang="en">
-				<head>
-					<meta charset="UTF-8">
-					<meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource}; script-src 'nonce-${nonce}';">
-					<link rel="stylesheet" href="${stylesUri}">
-					<title>JA</title>
-				</head>
-				<body>
-          <h1>HELLO</h1>
-          <h1 id="showtitle" />
-          <button onclick="getTitle()">点击显示</button>
+      <!doctype html>
+      <html lang="en">
+        <head>
+          <meta charset="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>JA</title>
+        </head>
+        <body>
+          <div id="app"></div>
+          <script type="module" src="https://unpkg.com/@vscode/webview-ui-toolkit/dist/toolkit.min.js"></script>
           <script type="module" nonce="${nonce}" src="${webviewUri}"></script>
-				</body>
-			</html>    
+        </body>
+      </html>    
     `;
   }
 
